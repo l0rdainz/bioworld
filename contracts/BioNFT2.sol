@@ -6,7 +6,9 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+
 contract BioNFT2 is Ownable, ERC721 {
+    uint256 public mintPrice;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
     using Strings for uint256;
@@ -16,7 +18,9 @@ contract BioNFT2 is Ownable, ERC721 {
     // Base URI
     string private _baseURIextended;
 //can change this to bioworlds or smth
-    constructor() public ERC721("BioCollectibles", "BIOC") {}
+    constructor() payable ERC721("BioCollectibles", "BIOC") {
+        mintPrice=0.01 ether;
+    }
 
     // https://forum.openzeppelin.com/t/function-settokenuri-in-erc721-is-gone-with-pragma-0-8-0/5978/3
     function setBaseURI(string memory baseURI_) external onlyOwner {
@@ -65,7 +69,7 @@ contract BioNFT2 is Ownable, ERC721 {
         return string(abi.encodePacked(base, tokenId.toString()));
     }
 
-    function claimItem(string memory tokenURI) public returns (uint256) {
+    function claimItem(string memory tokenURI) public payable returns (uint256) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
         _safeMint(msg.sender, newItemId);
