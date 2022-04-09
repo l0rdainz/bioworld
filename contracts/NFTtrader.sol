@@ -10,17 +10,19 @@ contract NFTtrader{
     }
 
     function addListing(uint256 price, address contractAddr, uint256 tokenId) public{
-        ERC721 token = BioNFT2(contractAddr);
-        require(token.isApprovedForAll(msg.sender,address(this)),"contract must be approved");
         listings[contractAddr][tokenId]=Listing(price,msg.sender);
+        BioNFT2 token=BioNFT2(contractAddr);
+        token.approve(address(this), tokenId);
+        //need to check if its owner??
+        token.transferFrom(msg.sender,address(this),tokenId);
     }
 
     function purchase(address contractAddr,uint256 tokenId, uint256 amount)public payable{
         Listing memory item = listings[contractAddr][tokenId];
         require(msg.value >= item.price *amount,"insufficient funds");
         balances[item.seller] += msg.value;
-        ERC721 token=BioNFT2(contractAddr);
-        token.transferFrom(item.seller,msg.sender,tokenId);
+        BioNFT2 token=BioNFT2(contractAddr);
+        token.transferFrom(address(this),msg.sender,tokenId);
     }
 
     function withdraw(uint256 amount, address payable destAddr)public{

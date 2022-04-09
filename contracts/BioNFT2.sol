@@ -72,7 +72,7 @@ contract BioNFT2 is Ownable, ERC721 {
     function claimItem(string memory tokenURI) public payable returns (uint256) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
-        _safeMint(msg.sender, newItemId);
+        _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
         return newItemId;
     }

@@ -2,9 +2,11 @@ import {useState} from 'react';
 import {ethers} from 'ethers';
 import coinNFT from './Victcoins.json';
 import NFT from './BioNFT2.json'
+import Trader from './NFTtrader.json'
+
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
-const NFTadd='0x2533614c51601D4b727611BdAB19D8F7A3876c10';
-const traderAdd="0x62F79348d89D10b050a094123e18903Ed7eebc0a";
+const NFTadd='0x38504815A0501a66517085269F86b979c8ce6cE3';
+const traderAdd="0x0818A424C9143f185C88a28AbD6922075cfaf23e";
 
 const Others = ({accounts,setAccounts})=>{
     const [userAccount,setUserAccount] = useState('')
@@ -41,7 +43,7 @@ const Others = ({accounts,setAccounts})=>{
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const contract =new ethers.Contract(
-            traderAdd,NFT.abi,signer
+            traderAdd,Trader.abi,signer
         );
         try{
             const response = await contract.addListing(1,NFTadd,1); 
@@ -54,6 +56,28 @@ const Others = ({accounts,setAccounts})=>{
         }
     
    }}
+   
+   async function purchaseNFT(){
+    if(window.ethereum){
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract =new ethers.Contract(
+            traderAdd,Trader.abi,signer
+        );
+        try{
+            const response = await contract.purchase(NFTadd,1,1,{
+                value:ethers.utils.parseEther((0.01).toString())
+            }); 
+            console.log('response:',response);
+
+        }
+        catch(err){
+            console.log("error:",err)
+
+        }
+    
+   }
+   }
   
     async function sendCoins(){
       if(typeof window.ethereum !=='undefined'){
@@ -81,6 +105,8 @@ const Others = ({accounts,setAccounts})=>{
         placeholder="Amount"/>
         <br></br>
         <button onClick={listNFT}>List</button>
+
+        <button onClick={purchaseNFT}>Buy!</button>
         </div>
         
         
