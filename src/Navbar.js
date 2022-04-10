@@ -1,6 +1,6 @@
 import React,{useState}  from 'react';
 import {ethers} from 'ethers';
-import {box,Button,Flex,flexbox,Image,Link,Space} from '@chakra-ui/react';
+import {Flex,Image,Link} from '@chakra-ui/react';
 import Facebook from "./assets/social-media-icons/facebook_32x32.png";
 import Twitter from "./assets/social-media-icons/twitter_32x32.png";
 import Email from "./assets/social-media-icons/email_32x32.png";
@@ -28,7 +28,7 @@ const NavBar = ({accounts,setAccounts}) => {
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             const contract = new ethers.Contract(coinsAdd, coinNFT.abi, provider);
             const balance = await contract.balanceOf(account);
-            const number = parseInt(balance._hex,16) 
+            const number = (parseInt(balance._hex,16) /(10**18))
             setBalance(number)
           console.log(number)
           

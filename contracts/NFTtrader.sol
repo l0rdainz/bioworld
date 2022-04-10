@@ -12,7 +12,7 @@ contract NFTtrader{
     function addListing(uint256 price, address contractAddr, uint256 tokenId) public{
         listings[contractAddr][tokenId]=Listing(price,msg.sender);
         BioNFT2 token=BioNFT2(contractAddr);
-        token.approve(address(this), tokenId);
+        //token.approve(address(this), tokenId);
         //need to check if its owner??
         token.transferFrom(msg.sender,address(this),tokenId);
     }
