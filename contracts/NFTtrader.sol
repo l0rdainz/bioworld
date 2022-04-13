@@ -8,13 +8,17 @@ contract NFTtrader{
         uint256 price;
         address seller;
     }
-
+    
     function addListing(uint256 price, address contractAddr, uint256 tokenId) public{
         listings[contractAddr][tokenId]=Listing(price,msg.sender);
         BioNFT2 token=BioNFT2(contractAddr);
         //token.approve(address(this), tokenId);
         //need to check if its owner??
         token.transferFrom(msg.sender,address(this),tokenId);
+    }
+    function fetchMarketItems(uint tokenId,address contractAddr) public view returns (Listing[] memory) {
+        Listing memory Item=listings[contractAddr][tokenId];
+        return Item;
     }
 
     function purchase(address contractAddr,uint256 tokenId, uint256 amount)public payable{

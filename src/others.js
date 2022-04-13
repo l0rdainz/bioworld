@@ -29,7 +29,8 @@ const Others = ({accounts,setAccounts})=>{
             });
                 
             console.log('response:',response);
-
+            var number=(await contract.totalSupply()).toString()
+            window.alert("Thank you for minting the NFT.")
         }
         catch(err){
             console.log("error:",err)
@@ -109,52 +110,60 @@ const Others = ({accounts,setAccounts})=>{
                 traderAdd,Trader.abi,signer
             );
             
-        
      try{
          
-        const itemCount = await Mintcontract.balanceOf(traderAdd)
-        console.log(itemCount)
+        const itemCount = await Mintcontract.totalSupply()
+       
         let items = []
-        for (let i = 1; i <= itemCount; i++) {
-          const item = await Mintcontract.tokenOfOwnerByIndex.call(traderAdd,i)
-          console.log(item)
-     }}
+        for (let i = 3; i <= itemCount; i++) {
+          const uri = await Mintcontract.tokenURI(i)
+          //iterate through the tokenURI(index) to get URI
+          const response = await fetch(uri)
+          const metadata = await response.json()
+          const selldata = await marketplace.listings(NFTadd,i)
+          items.push({
+                    itemId: i,
+                    seller:selldata.seller,
+                    price:selldata.price,
+                    name: metadata.name,
+                    description: metadata.description,
+                    image: metadata.image
+                  })
+      
+      
+ 
+      }
+      setItems(items) 
+      console.log({items}.items)
+    
+    }
      catch(err){
         console.log("error:",err)
 
     }}
     
-    //     if (!item.sold) {
-    //       // get uri url from nft contract
-    //       const uri = await nft.tokenURI(item.tokenId)
-    //       // use uri to fetch the nft metadata stored on ipfs 
-    //       const response = await fetch(uri)
-    //       const metadata = await response.json()
-    //       // get total price of item (item price + fee)
-    //       const totalPrice = await marketplace.getTotalPrice(item.itemId)
-    //       // Add item to items array
-    //       items.push({
-    //         totalPrice,
-    //         itemId: item.itemId,
-    //         seller: item.seller,
-    //         name: metadata.name,
-    //         description: metadata.description,
-    //         image: metadata.image
-    //       })
-    //     }
-    //   }
-    //   setLoading(false)
-    //   setItems(items)
+   
+      setLoading(false)
+      
     }
 
+ function Testing(){
+    const newitem={items}.items
+    console.log(newitem)
+    const Test2= newitem.map(
+        ({ seller, itemId }) => `Seller: ${seller} itemId: ${itemId} `
+      );
+    
+   console.log(Test2)
+}
     useEffect(() => {
         loadMarketplaceItems()
       }, [])
-    //   if (loading) return (
-    //     <main style={{ padding: "1rem 0" }}>
-    //       <h2>Loading...</h2>
-    //     </main>
-    //   )
+      if (loading) return (
+        <main style={{ padding: "1rem 0" }}>
+          <h2>Loading...</h2>
+        </main>
+      )
     return(<div className="madness"> <h1>Start Minting BioNFT Now!!</h1>
        <input type="string" placeholder="Enter URL of metadata" 
        onChange={e => setMetaData(e.target.value)}
@@ -172,6 +181,15 @@ const Others = ({accounts,setAccounts})=>{
         <br></br>
         <button onClick={listNFT}>List</button>
         <button onClick={purchaseNFT}>Buy!</button>
+        <br></br>
+        <h2>Marketplace</h2>
+        <button onClick={Testing}>TEST!</button>
+        <ul>
+  
+        </ul>
+        
+    
+        
         </div>
         
         

@@ -1,67 +1,37 @@
 import {useState} from 'react';
-import {ethers, BigNumber} from 'ethers';
-import BioNFT from './BioNFT.json'
-import { Flex } from '@chakra-ui/react';
+import axios from 'axios';
 
 const BioNFTAddress = "0xFCC7C71f25647F19D718E0d269054b23E3ca7ee5";
 const MainMint = ({accounts,setAccounts})=>{
-    const [ mintAmount,setMintAmount] = useState(1);
+    const [ name,setName] = useState("");
+    const [ Description,setDescription] = useState("");
+    const [ image,setImage] = useState("");
     const isConnected = Boolean(accounts[0]);
-
-    async function handleMint(){
-        console.log({mintAmount})
-        if(window.ethereum){
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-            const contract =new ethers.Contract(
-                BioNFTAddress,BioNFT.abi,signer
-            );
-            try{
-                const response = await contract.mint(BigNumber.from(mintAmount),{
-                    value:ethers.utils.parseEther((0.02*mintAmount).toString())
-                });
-                    
-                console.log('response:',response);
-
-            }
-            catch(err){ 
-                console.log("error:",err)
-
-            }
-        }
+async function generatejson(){
+    const headers= {
+     "Api-Key" :"eb322cec-bac8-11ec-b95c-0242ac110002"
     }
-    const handleDecrement = () =>{
-        if (mintAmount<=0) return;
-        setMintAmount(mintAmount - 1)
-
-    };
-    const handleIncrement =()=>{
-        if(mintAmount>=3)return;
-        setMintAmount(mintAmount+1)
-    }
+    axios.post('https://json.extendsclass.com/gui/bin',[{name},{Description},{image}],{headers: headers})
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+}
     return(
         <div>
             <h1>BioWorlds</h1>
-            <p>Help!!</p>
+            <p>some description of Bioworld!!</p>
             {isConnected?(
                 <div>
                     <div>
-                        <Flex align="center" justify="center">
-                        <button 
-                            backgroundColor="#D6517D"
-                            borderradius="5px"
-                            boxShadow="0px 2px 2px 1px #0F0F0F"
-                            color="white"
-                            cursor="pointer"
-                            fontFamily="inherit"
-                            padding="15px"
-                            marginTop='10px'
-                            onClick={handleDecrement}>-</button>
-                        <input type='number'readOnly value={mintAmount}/>
-                        <button onClick={handleIncrement}>+</button>
-                        </Flex>
+                        
+                    <input type='string' placeholder="NFT Title" value={name} onChange={e => setName(e.target.value)}/>
+                    <input type='string' placeholder="NFT Description" value={Description} onChange={e => setDescription(e.target.value)}/>
+                    <input type='string' placeholder="Image URL" value={image} onChange={e => setImage(e.target.value)}/>
+                      
+                    <button onClick={generatejson}>Generate</button>
                     </div>
-                    <button onClick={handleMint}>Mint Now</button>
+                 
                     </div>
                     
             ):(
