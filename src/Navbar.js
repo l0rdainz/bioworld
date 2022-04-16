@@ -6,6 +6,8 @@ import Twitter from "./assets/social-media-icons/twitter_32x32.png";
 import Email from "./assets/social-media-icons/email_32x32.png";
 import coinNFT from './Victcoins.json';
 import coins from './assets/coin.png'
+import { BrowserRouter as Router } from "react-router-dom";
+
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
 
 
@@ -58,29 +60,28 @@ const NavBar = ({accounts,setAccounts}) => {
             width="40%"
             padding="30px"
             >
-                <box margin="0 15px"><h1>About</h1></box>
-                <spacer/>
-                <box margin="0 15px"><h1>Mint</h1></box>
-                <spacer/>
-                <box margin="0 15px"><h1>Team</h1></box>
-                <spacer/>
+                
+                
+                <h1>Marketplace</h1>
+              
+                <Link href="/Transfer">
+                <h1>Transfer</h1>
+                </Link>
+                <Link href='/Team'>
+                <h1>Team</h1>
+                </Link>
+               
+
                 {isConnected ? (<h1> </h1>
                 
                 ):(<div>
                  <button 
-                            backgroundColor="#D6517D"
-                            borderradius="5px"
-                            boxShadow="0px 2px 2px 1px #0F0F0F"
-                            color="white"
-                            cursor="pointer"
-                            fontFamily="inherit"
-                            padding="15px"
-                            marginTop='10px'
+                           
                             onClick={connectAccount}>Connect</button></div>
             )}
 
 
-            <spacer/>
+         
                 {isConnected ? ( <div> <button 
                     
                     onClick={getbalance}>Show Balance</button></div>
@@ -90,7 +91,7 @@ const NavBar = ({accounts,setAccounts}) => {
                
             </Flex>
                 
-           <box><h1>{balance} </h1></box>
+           <h1>{balance} </h1>
            <Image src={coins} boxSize="42px" margin="0 15px"/>
         </Flex>
     )
