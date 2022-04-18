@@ -3,7 +3,7 @@ import {ethers} from 'ethers';
 import NFT from './../BioNFT2.json'
 import Trader from './../NFTtrader.json'
 import { StyleSheet, View} from "react-native";
-import {Card,Container,Button} from 'react-bootstrap';
+import {Card,Container,Button,Modal} from 'react-bootstrap';
 
 const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
 const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
@@ -13,13 +13,18 @@ const Others = ({accounts,setAccounts,items,setItems})=>{
     const [userAccount,setUserAccount] = useState('')
     const [amount,setAmount] = useState(0)
     const [metaData,setMetaData]=useState()
-   async function testing(){
-       console.log(accounts[0])
+    const [isOpen, setIsOpen] = useState(false);
+    const hideModal = () => {
+
+        setIsOpen(false);
+    
+      };
+ 
+   function triggerclick(){
+setIsOpen(true)
+       
    }
-   async function testing2(){
-       window.alert("test")
-   }
-   async function listNFT(){
+   async function listNFT(itemId){
     if(window.ethereum){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
@@ -31,7 +36,7 @@ const Others = ({accounts,setAccounts,items,setItems})=>{
         );
         try{
             await Mintcontract.setApprovalForAll(traderAdd,true)
-            const response = await contract.addListing(1,NFTadd,1); 
+            const response = await contract.addListing(`${amount}`.toString(),NFTadd,itemId); 
             console.log('response:',response);
 
         }
@@ -144,9 +149,30 @@ const Others = ({accounts,setAccounts,items,setItems})=>{
                     {description}
 
                 </Card.Text>
-              
-                <Button variant="primary" onClick={testing2}>List Now</Button>
-               
+                {/* testing2(`${itemId}`) */}
+                <Button variant="primary" onClick={triggerclick}>List Now</Button>
+                <Modal show={isOpen} onHide={hideModal}>
+
+<Modal.Header>
+
+  <Modal.Title>List Your NFT</Modal.Title>
+
+</Modal.Header>
+
+<Modal.Body>Name: {name} <br></br>
+Price: <input onChange={e => setAmount(e.target.value)}
+        placeholder="Amount(VICT)"/>
+</Modal.Body>
+
+<Modal.Footer>
+
+  <button onClick={hideModal}>Cancel</button>
+
+  <button onClick={()=>listNFT(`${itemId}`)}>List</button>
+
+</Modal.Footer>
+
+</Modal>
         </Card.Body>
        
       </Card>
@@ -162,7 +188,7 @@ const Others = ({accounts,setAccounts,items,setItems})=>{
         <br></br>
         <button onClick={listNFT}>List</button>
         <button onClick={purchaseNFT}>Buy!</button>
-        <button onClick={testing}>test!</button>
+        
         <br></br>
         <h2>Marketplace</h2>
        
