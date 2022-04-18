@@ -1,29 +1,10 @@
-import {useState} from 'react';
-import axios from 'axios';
+
 import { StyleSheet, View } from "react-native";
-import { Textarea } from '@chakra-ui/react';
 
 const BioNFTAddress = "0xFCC7C71f25647F19D718E0d269054b23E3ca7ee5";
-const MainMint = ({accounts,setAccounts})=>{
-    const [ name,setName] = useState("");
-    const [ Description,setDescription] = useState("");
-    const [ image,setImage] = useState("");
-    const isConnected = Boolean(accounts[0]);
-
-
-
-    async function generatejson(event){
-        event.preventDefault();
-    const headers= {
-     "Api-Key" :"eb322cec-bac8-11ec-b95c-0242ac110002"
-    }
-    axios.post('https://json.extendsclass.com/gui/bin',[{name},{Description},{image}],{headers: headers})
-    .then(res => {
-        console.log(res);
-        const uri = (res.data.uri);
-        window.alert(uri)
-      })
-}
+const MainMint = ()=>{
+  
+  
     return(
         <div>
            
@@ -39,26 +20,8 @@ const MainMint = ({accounts,setAccounts})=>{
             </View>
           
             
-            {isConnected?(
-                <div>
-                    <div>
-                    <h1>Tell Us About Your NFT</h1> 
-                    <form>
-                    <View style={styles.form}>
-                    <input type='string' placeholder="NFT Title" value={name} onChange={e => setName(e.target.value)}/><br></br>
-                    <Textarea type='string' placeholder="NFT Description" value={Description} onChange={e => setDescription(e.target.value)}/><br></br>
-                    <input type='string' placeholder="Image URL" value={image} onChange={e => setImage(e.target.value)}/><br></br>
-                      
-                    <button onClick={generatejson}>Generate</button>
-                    </View>
-                    </form>
-                    </div>
-                 
-                    </div>
-                    
-            ):(
-                <p>Not Connected</p>
-            )}
+           <br></br>
+           <br></br>
       </div>
     );
 };

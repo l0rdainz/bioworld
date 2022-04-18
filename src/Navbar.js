@@ -6,7 +6,7 @@ import Twitter from "./assets/social-media-icons/twitter_32x32.png";
 import Email from "./assets/social-media-icons/email_32x32.png";
 import coinNFT from './Victcoins.json';
 import coins from './assets/coin.png'
-import { BrowserRouter as Router } from "react-router-dom";
+
 
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
 
@@ -37,18 +37,18 @@ const NavBar = ({accounts,setAccounts}) => {
           }
         }
     return(
-        <Flex justify="space-between" align="center" padding="30px">
-            <Flex justify="space-around" width="40%" >
+        <Flex justify="space-between" align="center" padding="1%">
+            <Flex justify="space-around" width="20%" >
                 <Link href="https://www.facebook.com">
                     <Image src={Facebook} boxSize="42px" />
                 </Link>
             </Flex>
-            <Flex justify="space-around" width="40%" >
+            <Flex justify="space-around" width="20%" >
             <Link href="https://www.twitter.com">
             <Image src={Twitter} boxSize="42px" />
             </Link>
             </Flex>
-            <Flex justify="space-around" width="40%" >
+            <Flex justify="space-around" width="20%" >
             <Link href="https://www.gmail.com">
             <Image src={Email} boxSize="42px" />
             </Link>
@@ -57,19 +57,21 @@ const NavBar = ({accounts,setAccounts}) => {
           <Flex
             justify="space-around"
             align="center"
-            width="40%"
+            width="60%"
             padding="30px"
             >
-                
-                
+               <Link href="/collection">
+                <h1>Collection</h1>
+                </Link> 
+                <Link href="/marketplace">
                 <h1>Marketplace</h1>
+                </Link>
+          
               
-                <Link href="/Transfer">
+                <Link href="/transfer">
                 <h1>Transfer</h1>
                 </Link>
-                <Link href='/Team'>
-                <h1>Team</h1>
-                </Link>
+             
                
 
                 {isConnected ? (<h1> </h1>

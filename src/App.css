@@ -29,7 +29,7 @@ body{
   z-index:10;
   top:0;
   left:0;
-  position:fixed;
+
 
 }
 .moving-background{
@@ -44,6 +44,7 @@ body{
   background-repeat:no-repeat;
   background-attachment:fixed;
   background-position:10% 10%;
+ 
 
 }
 
