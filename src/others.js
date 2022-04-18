@@ -6,7 +6,7 @@ import Trader from './NFTtrader.json'
 import { StyleSheet, View} from "react-native";
 
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
-const NFTadd='0x2533614c51601d4b727611bdab19d8f7a3876c10';
+const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
 const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
 
 const Others = ({accounts,setAccounts,items,setItems})=>{
@@ -17,7 +17,8 @@ const Others = ({accounts,setAccounts,items,setItems})=>{
       await window.ethereum.request ({method:'eth_requestAccounts'});
     }
     
-   async function MintNFT(){
+   async function MintNFT(event){
+       event.preventDefault()
     if(window.ethereum){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();

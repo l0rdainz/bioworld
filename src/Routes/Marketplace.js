@@ -6,8 +6,7 @@ import NFT from './../BioNFT2.json'
 import Trader from './../NFTtrader.json'
 
 
-const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
-const NFTadd='0x2533614c51601d4b727611bdab19d8f7a3876c10';
+const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
 const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
 
 
@@ -28,9 +27,9 @@ const Cards = ({items,setItems})=>{
      try{
          
         const itemCount = await Mintcontract.totalSupply()
-       
+        
         let items = []
-        for (let i = 3; i <= itemCount; i++) {
+        for (let i = 1; i <= itemCount; i++) {
           const uri = await Mintcontract.tokenURI(i)
           //iterate through the tokenURI(index) to get URI
           const response = await fetch(uri)

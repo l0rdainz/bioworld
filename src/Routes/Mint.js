@@ -8,7 +8,7 @@ import { Textarea } from '@chakra-ui/react';
 import axios from 'axios';
 
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
-const NFTadd='0x2533614c51601d4b727611bdab19d8f7a3876c10';
+const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
 const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
 
 const Mint = ({accounts,setAccounts,items,setItems})=>{
@@ -16,14 +16,10 @@ const Mint = ({accounts,setAccounts,items,setItems})=>{
     const [ name,setName] = useState("");
     const [ Description,setDescription] = useState("");
     const [ image,setImage] = useState("");
-    const [userAccount,setUserAccount] = useState('')
-    const [amount,setAmount] = useState(0)
     const [metaData,setMetaData]=useState()
-    async function requestAccount(){
-      await window.ethereum.request ({method:'eth_requestAccounts'});
-    }
     
-   async function MintNFT(){
+   async function MintNFT(event){
+    event.preventDefault();
     if(window.ethereum){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
@@ -31,9 +27,7 @@ const Mint = ({accounts,setAccounts,items,setItems})=>{
             NFTadd,NFT.abi,signer
         );
         try{
-            const response = await contract.claimItem(metaData,{
-                value:ethers.utils.parseEther((0.01).toString())
-            });
+            const response = await contract.claimItem(metaData);
                 
             console.log('response:',response);
             var number=(await contract.totalSupply()).toString()
@@ -122,7 +116,7 @@ axios.post('https://json.extendsclass.com/gui/bin',[{name},{Description},{image}
                     </View>
                     </form>
                     </div>
-                    
+
                     <h1>Start Minting BioNFT Now!!</h1>
        <form>
        <View style={styles.form}>

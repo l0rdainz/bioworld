@@ -6,6 +6,7 @@ import Others from './others.js';
 import WebFont from 'webfontloader';
 import Marketplace from './Routes/Marketplace.js'
 import Transfer from './Routes/Transfer'
+import Collection from './Routes/Collection'
 import Mint from './Routes/Mint'
 import { BrowserRouter as Router, Route,Routes } from "react-router-dom";
 
@@ -32,6 +33,7 @@ function App() {
         <Route path='/transfer' element={<Transfer/>}></Route>
         <Route path='/marketplace' element={  <Marketplace items={items} setItems={setItems}/>}></Route>
         <Route path='/mint' element={  <Mint accounts={accounts} setAccounts={setAccounts} items={items} setItems={setItems}/>}></Route>
+        <Route path='/collection' element={  <Collection accounts={accounts} setAccounts={setAccounts} items={items} setItems={setItems}/>}></Route>      
       </Routes>
      
     </div>

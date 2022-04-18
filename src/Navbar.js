@@ -60,7 +60,10 @@ const NavBar = ({accounts,setAccounts}) => {
             width="60%"
             padding="30px"
             >
-               <Link href="/collection">
+               <Link href="/mint">
+                <h1>Mint</h1>
+                </Link> 
+                <Link href="/collection">
                 <h1>Collection</h1>
                 </Link> 
                 <Link href="/marketplace">

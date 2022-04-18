@@ -1,7 +1,7 @@
 
 import { StyleSheet, View } from "react-native";
 
-const BioNFTAddress = "0xFCC7C71f25647F19D718E0d269054b23E3ca7ee5";
+
 const MainMint = ()=>{
   
   

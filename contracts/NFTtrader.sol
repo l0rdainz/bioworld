@@ -16,10 +16,7 @@ contract NFTtrader{
         //need to check if its owner??
         token.transferFrom(msg.sender,address(this),tokenId);
     }
-    function fetchMarketItems(uint tokenId,address contractAddr) public view returns (Listing[] memory) {
-        Listing memory Item=listings[contractAddr][tokenId];
-        return Item;
-    }
+  
 
     function purchase(address contractAddr,uint256 tokenId, uint256 amount)public payable{
         Listing memory item = listings[contractAddr][tokenId];
