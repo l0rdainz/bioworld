@@ -6,7 +6,8 @@ import { StyleSheet, View} from "react-native";
 import {Card,Container,Button,Modal} from 'react-bootstrap';
 
 const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
-const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
+// const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
+const traderAdd="0x2b0e98Dd08b2E8B9Ab380eec62eC3fD45C9a366f";
 
 const Others = ({accounts,setAccounts,items,setItems})=>{
     const isConnected = Boolean(accounts[0]);
@@ -91,7 +92,7 @@ setIsOpen(true)
         let items = []
         for (let i = 1; i <= itemCount; i++) {
           const uri = await Mintcontract.tokenURI(i)
-          if(await Mintcontract.ownerOf(i)==traderAdd){
+          if(await Mintcontract.ownerOf(i)!=accounts[0]){
               continue
           }
           else{

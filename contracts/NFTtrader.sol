@@ -1,5 +1,6 @@
 pragma solidity ^0.8.3;
 import "./BioNFT2.sol";
+import "./Victcoins.sol";
 
 contract NFTtrader{
     mapping(address=> mapping(uint256=>Listing))public listings;
@@ -18,9 +19,10 @@ contract NFTtrader{
     }
   
 
-    function purchase(address contractAddr,uint256 tokenId, uint256 amount)public payable{
+    function purchase(address contractAddr,address coinAddr, uint256 tokenId, uint256 amount)public payable{
         Listing memory item = listings[contractAddr][tokenId];
-        require(msg.value >= item.price *amount,"insufficient funds");
+        Victcoins coins=Victcoins(coinAddr);
+        require(coins.transferFrom(msg.sender, address(this), item.price*amount),"Transfer of funds to trader addr unsuccessful");
         balances[item.seller] += msg.value;
         BioNFT2 token=BioNFT2(contractAddr);
         token.transferFrom(address(this),msg.sender,tokenId);

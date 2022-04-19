@@ -4,11 +4,12 @@ import {useState,useEffect} from 'react';
 import {ethers} from 'ethers';
 import NFT from './../BioNFT2.json'
 import Trader from './../NFTtrader.json'
+import coinNFT from './../Victcoins.json';
 
-
+const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
 const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
-const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
-
+// const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
+const traderAdd="0x2b0e98Dd08b2E8B9Ab380eec62eC3fD45C9a366f";
 
 const Cards = ({items,setItems})=>{
     
@@ -32,6 +33,10 @@ const Cards = ({items,setItems})=>{
         for (let i = 1; i <= itemCount; i++) {
           const uri = await Mintcontract.tokenURI(i)
           //iterate through the tokenURI(index) to get URI
+          if(await Mintcontract.ownerOf(i)!=traderAdd){
+            continue
+        }
+        else{
           const response = await fetch(uri)
           const metadata = await response.json()
           const selldata = await marketplace.listings(NFTadd,i)
@@ -46,7 +51,7 @@ const Cards = ({items,setItems})=>{
       
       
  
-      }
+      }}
       setItems(items) 
       console.log({items}.items)
     
@@ -59,7 +64,37 @@ const Cards = ({items,setItems})=>{
    
       setLoading(false)
       
-    }    
+    }   
+       
+   async function purchaseNFT(itemId,price){
+    let numberOfTokens = ethers.utils.parseUnits(price, 18)
+
+    if(window.ethereum){
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract =new ethers.Contract(
+            traderAdd,Trader.abi,signer
+        );
+        const coinscontract = new ethers.Contract(
+            coinsAdd,coinNFT.abi,signer
+        )
+        try{
+            coinscontract.transfer(traderAdd, numberOfTokens).then((transferResult) => {
+
+                console.dir(transferResult)
+        
+              })
+            const response = await contract.purchase(NFTadd,itemId,1); 
+            console.log('response:',response);
+
+        }
+        catch(err){
+            console.log("error:",err)
+
+        }
+    
+   }
+   } 
     useEffect(() => {
         loadMarketplaceItems()
       }, [])
@@ -88,7 +123,7 @@ const Cards = ({items,setItems})=>{
                 <footer className="blockquote-footer">
       Seller: {seller}
       </footer>
-                <Button variant="primary">Buy Now</Button>
+                <Button variant="primary" onClick={()=>purchaseNFT(`${itemId}`,`${price.toString()}`)}>Buy Now</Button>
                 &nbsp; &nbsp; {price.toString()} VICT
         </Card.Body>
        

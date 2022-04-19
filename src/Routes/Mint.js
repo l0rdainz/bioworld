@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
 const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
-const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
+const traderAdd="0x2b0e98Dd08b2E8B9Ab380eec62eC3fD45C9a366f";
 
 const Mint = ({accounts,setAccounts,items,setItems})=>{
     const isConnected = Boolean(accounts[0]);
