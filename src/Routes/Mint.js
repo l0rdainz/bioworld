@@ -1,15 +1,13 @@
 import {useState,useEffect} from 'react';
 import {ethers} from 'ethers';
-import coinNFT from './../Victcoins.json';
 import NFT from './../BioNFT2.json'
-import Trader from './../NFTtrader.json'
 import { StyleSheet, View} from "react-native";
 import { Textarea } from '@chakra-ui/react';
 import axios from 'axios';
 
-const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
-const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
-const traderAdd="0x64CeC5A39F2281DfAF89844c2d94F6B453226d58";
+
+const NFTadd='0xBC3ACfC3218566B6a04c8105f5e828441Dc38615';
+
 
 const Mint = ({accounts,setAccounts,items,setItems})=>{
     const isConnected = Boolean(accounts[0]);
@@ -27,17 +25,20 @@ const Mint = ({accounts,setAccounts,items,setItems})=>{
             NFTadd,NFT.abi,signer
         );
         try{
-            const response = await contract.claimItem(metaData);
-                
-            console.log('response:',response);
-            var number=(await contract.totalSupply()).toString()
+            let tx = await contract.claimItem(metaData);
+         
+            console.log('response:',tx);
+            await tx.wait(1);
             window.alert("Thank you for minting the NFT.")
+
         }
         catch(err){
             console.log("error:",err)
 
         }
     }
+    setMetaData('');
+    window.location.reload(true);
    }
    async function generatejson(event){
     event.preventDefault();
@@ -51,50 +52,9 @@ axios.post('https://json.extendsclass.com/gui/bin',[{name},{Description},{image}
     window.alert(uri)
   })
 }
-   async function listNFT(){
-    if(window.ethereum){
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const Mintcontract =new ethers.Contract(
-            NFTadd,NFT.abi,signer
-        );
-        const contract =new ethers.Contract(
-            traderAdd,Trader.abi,signer
-        );
-        try{
-            await Mintcontract.setApprovalForAll(traderAdd,true)
-            const response = await contract.addListing(10,NFTadd,3); 
-            console.log('response:',response);
-
-        }
-        catch(err){
-            console.log("error:",err)
-
-        }
-    
-   }}
+ 
    
-   async function purchaseNFT(){
-    if(window.ethereum){
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract =new ethers.Contract(
-            traderAdd,Trader.abi,signer
-        );
-        try{
-            const response = await contract.purchase(NFTadd,1,1,{
-                value:ethers.utils.parseEther((0.01).toString())
-            }); 
-            console.log('response:',response);
 
-        }
-        catch(err){
-            console.log("error:",err)
-
-        }
-    
-   }
-   }
   
    
 

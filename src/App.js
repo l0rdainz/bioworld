@@ -31,7 +31,7 @@ function App() {
       <MainMint /> 
       <Routes>
         <Route path='/transfer' element={<Transfer/>}></Route>
-        <Route path='/marketplace' element={  <Marketplace items={items} setItems={setItems}/>}></Route>
+        <Route path='/marketplace' element={  <Marketplace accounts={accounts} items={items} setItems={setItems}/>}></Route>
         <Route path='/mint' element={  <Mint accounts={accounts} setAccounts={setAccounts} items={items} setItems={setItems}/>}></Route>
         <Route path='/collection' element={  <Collection accounts={accounts} setAccounts={setAccounts} items={items} setItems={setItems}/>}></Route>      
       </Routes>

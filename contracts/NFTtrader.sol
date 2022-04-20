@@ -22,9 +22,10 @@ contract NFTtrader{
     function purchase(address contractAddr,address coinAddr, uint256 tokenId, uint256 amount)public {
         Listing memory item = listings[contractAddr][tokenId];
         Victcoins coins=Victcoins(coinAddr);
-        require(coins.transferFrom(msg.sender, item.seller, item.price*amount),"Transfer of funds to trader addr unsuccessful");
-        BioNFT2 token=BioNFT2(contractAddr);
-        token.transferFrom(address(this),msg.sender,tokenId);
+        bool success = coins.transferFrom(msg.sender, item.seller, item.price*amount);
+        if (success){BioNFT2 token=BioNFT2(contractAddr);
+        token.transferFrom(address(this),msg.sender,tokenId);}
+        
        
     }
 

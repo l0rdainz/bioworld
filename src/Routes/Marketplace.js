@@ -7,9 +7,9 @@ import Trader from './../NFTtrader.json'
 import coinNFT from './../Victcoins.json';
 
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
-const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
+const NFTadd='0xBC3ACfC3218566B6a04c8105f5e828441Dc38615';
 //  const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
-const traderAdd="0x64CeC5A39F2281DfAF89844c2d94F6B453226d58";
+const traderAdd="0x03c0b2360743A98DB410A47b6FDAe5CdE48AE038";
 
 const Cards = ({items,setItems})=>{
     
@@ -83,6 +83,8 @@ const Cards = ({items,setItems})=>{
             await tx.wait(1)
             const response = await contract.purchase(NFTadd,coinsAdd,itemId,1); 
             console.log('response:',response);
+            await response.wait(1)
+            window.location.reload(true);
 
         }
         catch(err){

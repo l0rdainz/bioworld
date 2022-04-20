@@ -5,15 +5,15 @@ import Trader from './../NFTtrader.json'
 import { StyleSheet, View} from "react-native";
 import {Card,Container,Button,Modal} from 'react-bootstrap';
 
-const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
+const NFTadd='0xBC3ACfC3218566B6a04c8105f5e828441Dc38615';
 // const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
-const traderAdd="0x64CeC5A39F2281DfAF89844c2d94F6B453226d58";
+const traderAdd="0x03c0b2360743A98DB410A47b6FDAe5CdE48AE038";
 
-const Others = ({accounts,setAccounts,items,setItems})=>{
+const Others = ({accounts,items,setItems})=>{
     const isConnected = Boolean(accounts[0]);
-    const [userAccount,setUserAccount] = useState('')
+    const [NFTname,setNFTname] = useState('')
     const [amount,setAmount] = useState(0)
-    const [metaData,setMetaData]=useState()
+    const [NFTid,setNFTid]=useState(0)
     const [isOpen, setIsOpen] = useState(false);
     const hideModal = () => {
 
@@ -21,8 +21,10 @@ const Others = ({accounts,setAccounts,items,setItems})=>{
     
       };
  
-   function triggerclick(){
+   function triggerclick(itemId,name){
 setIsOpen(true)
+setNFTname(name)
+setNFTid(itemId)
        
    }
    async function listNFT(itemId){
@@ -38,9 +40,14 @@ setIsOpen(true)
         try{
             //move this to smart contract
             let tx = await Mintcontract.setApprovalForAll(traderAdd,true)
+            window.alert("Please wait for the transaction to be mined")
             await tx.wait(1)
             const response = await contract.addListing(`${amount}`.toString(),NFTadd,itemId); 
             console.log('response:',response);
+            await response.wait(1)
+            window.alert("Your NFT has been listed")
+            setIsOpen(false);
+
 
         }
         catch(err){
@@ -95,7 +102,6 @@ setIsOpen(true)
         continue
     }} 
       setItems(items) 
-      console.log({items}.items)
     
     }
      catch(err){
@@ -136,7 +142,7 @@ setIsOpen(true)
 
                 </Card.Text>
                 {/* testing2(`${itemId}`) */}
-                <Button variant="primary" onClick={triggerclick}>List Now</Button>
+                <Button variant="primary" onClick={()=>triggerclick(`${itemId}`,`${name}`)}>List Now</Button>
                 <Modal show={isOpen} onHide={hideModal}>
 
 <Modal.Header>
@@ -145,7 +151,7 @@ setIsOpen(true)
 
 </Modal.Header>
 
-<Modal.Body>Name: {name} <br></br>
+<Modal.Body>Name: {NFTname} <br></br>
 Price: <input onChange={e => setAmount(e.target.value)}
         placeholder="Amount(VICT)"/>
 </Modal.Body>
@@ -154,7 +160,7 @@ Price: <input onChange={e => setAmount(e.target.value)}
 
   <button onClick={hideModal}>Cancel</button>
 
-  <button onClick={()=>listNFT(`${itemId}`)}>List</button>
+  <button onClick={()=>listNFT(`${NFTid}`)}>List</button>
 
 </Modal.Footer>
 
