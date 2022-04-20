@@ -7,7 +7,7 @@ import {Card,Container,Button,Modal} from 'react-bootstrap';
 
 const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
 // const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
-const traderAdd="0x2b0e98Dd08b2E8B9Ab380eec62eC3fD45C9a366f";
+const traderAdd="0x64CeC5A39F2281DfAF89844c2d94F6B453226d58";
 
 const Others = ({accounts,setAccounts,items,setItems})=>{
     const isConnected = Boolean(accounts[0]);
@@ -36,7 +36,9 @@ setIsOpen(true)
             traderAdd,Trader.abi,signer
         );
         try{
-            await Mintcontract.setApprovalForAll(traderAdd,true)
+            //move this to smart contract
+            let tx = await Mintcontract.setApprovalForAll(traderAdd,true)
+            await tx.wait(1)
             const response = await contract.addListing(`${amount}`.toString(),NFTadd,itemId); 
             console.log('response:',response);
 
@@ -46,29 +48,10 @@ setIsOpen(true)
 
         }
     
-   }}
+   }
+}
    
-   async function purchaseNFT(){
-    if(window.ethereum){
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract =new ethers.Contract(
-            traderAdd,Trader.abi,signer
-        );
-        try{
-            const response = await contract.purchase(NFTadd,1,1,{
-                value:ethers.utils.parseEther((0.01).toString())
-            }); 
-            console.log('response:',response);
-
-        }
-        catch(err){
-            console.log("error:",err)
-
-        }
-    
-   }
-   }
+  
   
   
     const [loading, setLoading] = useState(true)
@@ -85,17 +68,16 @@ setIsOpen(true)
             const marketplace =new ethers.Contract(
                 traderAdd,Trader.abi,signer
             );
-            
+        
      try{
          
         const itemCount = await Mintcontract.totalSupply()
         let items = []
         for (let i = 1; i <= itemCount; i++) {
           const uri = await Mintcontract.tokenURI(i)
-          if(await Mintcontract.ownerOf(i)!=accounts[0]){
-              continue
-          }
-          else{
+          //some error here
+          if (await Mintcontract.ownerOf(i)!= accounts[0]){
+           console.log(accounts[0])
           const response = await fetch(uri)
           const metadata = await response.json()
           const selldata = await marketplace.listings(NFTadd,i)
@@ -106,9 +88,12 @@ setIsOpen(true)
                     image: metadata.image
                   })
       
-                }
+                
  
       }
+      else {
+        continue
+    }} 
       setItems(items) 
       console.log({items}.items)
     
@@ -116,11 +101,11 @@ setIsOpen(true)
      catch(err){
         console.log("error:",err)
 
-    }}
+    }
     
    
       setLoading(false)
-      
+}
     }
 
 
@@ -185,13 +170,7 @@ Price: <input onChange={e => setAmount(e.target.value)}
         </div>
       </Container>
 
-        <br></br>
-        <br></br>
-        <button onClick={listNFT}>List</button>
-        <button onClick={purchaseNFT}>Buy!</button>
-        
-        <br></br>
-        <h2>Marketplace</h2>
+      
        
         </div>
         ):(

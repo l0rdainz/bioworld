@@ -32,7 +32,7 @@ const NavBar = ({accounts,setAccounts}) => {
             const balance = await contract.balanceOf(account);
             const number = (parseInt(balance._hex,16) /(10**18))
             setBalance(number)
-          console.log(number)
+         
           
           }
         }

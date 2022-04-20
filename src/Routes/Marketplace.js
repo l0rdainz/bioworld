@@ -8,8 +8,8 @@ import coinNFT from './../Victcoins.json';
 
 const coinsAdd= '0x551e0aF7F048c706dc696a85a682C3349c2eE567';
 const NFTadd='0x79D6A68E7AfEff80992a4acd49b74B99bfa7D9BB';
-// const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
-const traderAdd="0x2b0e98Dd08b2E8B9Ab380eec62eC3fD45C9a366f";
+//  const traderAdd="0x81dC9c1Ad76747f664fBF4C43759b8C45a490FC5";
+const traderAdd="0x64CeC5A39F2281DfAF89844c2d94F6B453226d58";
 
 const Cards = ({items,setItems})=>{
     
@@ -75,16 +75,13 @@ const Cards = ({items,setItems})=>{
         const contract =new ethers.Contract(
             traderAdd,Trader.abi,signer
         );
-        const coinscontract = new ethers.Contract(
+        const coincontract =new ethers.Contract(
             coinsAdd,coinNFT.abi,signer
-        )
+        );
         try{
-            coinscontract.transfer(traderAdd, numberOfTokens).then((transferResult) => {
-
-                console.dir(transferResult)
-        
-              })
-            const response = await contract.purchase(NFTadd,itemId,1); 
+            let tx = await coincontract.approve(traderAdd,numberOfTokens)
+            await tx.wait(1)
+            const response = await contract.purchase(NFTadd,coinsAdd,itemId,1); 
             console.log('response:',response);
 
         }

@@ -19,19 +19,19 @@ contract NFTtrader{
     }
   
 
-    function purchase(address contractAddr,address coinAddr, uint256 tokenId, uint256 amount)public payable{
+    function purchase(address contractAddr,address coinAddr, uint256 tokenId, uint256 amount)public {
         Listing memory item = listings[contractAddr][tokenId];
         Victcoins coins=Victcoins(coinAddr);
-        require(coins.transferFrom(msg.sender, address(this), item.price*amount),"Transfer of funds to trader addr unsuccessful");
-        balances[item.seller] += msg.value;
+        require(coins.transferFrom(msg.sender, item.seller, item.price*amount),"Transfer of funds to trader addr unsuccessful");
         BioNFT2 token=BioNFT2(contractAddr);
         token.transferFrom(address(this),msg.sender,tokenId);
+       
     }
 
-    function withdraw(uint256 amount, address payable destAddr)public{
-        require(amount <= balances[msg.sender],"Insufficient funds");
-        balances[msg.sender] -=amount;
-        destAddr.transfer(amount);
-    }
+    // function withdraw(uint256 amount, address payable destAddr)public{
+    //     require(amount <= balances[msg.sender],"Insufficient funds");
+    //     balances[msg.sender] -=amount;
+    //     destAddr.transfer(amount);
+    // }
 
 }
